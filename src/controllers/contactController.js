@@ -23,4 +23,22 @@ const filterContacts = (req, res) => {
   res.json(filteredContacts);
 };
 
-module.exports = { getContacts, createContact, filterContacts };
+const deleteContact = (req, res) => {
+  const { id } = req.params;
+  contacts = contacts.filter(contact => contact.id !== id);
+  res.status(204).send();
+};
+
+const updateContact = (req, res) => {
+  const { id } = req.params;
+  const { name, email, phone } = req.body;
+  const contactIndex = contacts.findIndex(contact => contact.id === id);
+  if (contactIndex !== -1) {
+    contacts[contactIndex] = { id, name, email, phone };
+    res.json(contacts[contactIndex]);
+  } else {
+    res.status(404).send('Contact not found');
+  }
+};
+
+module.exports = { getContacts, createContact, filterContacts, deleteContact, updateContact };
